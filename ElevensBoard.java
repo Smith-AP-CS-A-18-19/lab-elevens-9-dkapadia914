@@ -65,7 +65,7 @@ public class ElevensBoard extends Board {
 	 */
 	@Override
 	public boolean anotherPlayIsPossible() {
-		ArrayList<int> theseCards  = cardIndexes();
+		ArrayList<Integer> theseCards  = cardIndexes();
 		ArrayList<Integer> selectedCards = new ArrayList<Integer>();
 		for (int i : theseCards) {
 			ArrayList<Card> nowThese = new ArrayList<Card>();

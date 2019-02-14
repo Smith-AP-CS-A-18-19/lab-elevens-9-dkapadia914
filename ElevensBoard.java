@@ -51,9 +51,8 @@ public class ElevensBoard extends Board {
 	 * @return true if the selected cards form a valid group for removal;
 	 *         false otherwise.
 	 */
-	@Override
 	public boolean isLegal(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+		return (containsPairSum11() || containsJQK());
 	}
 
 	/**
@@ -66,7 +65,39 @@ public class ElevensBoard extends Board {
 	 */
 	@Override
 	public boolean anotherPlayIsPossible() {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+		ArrayList<int> theseCards  = cardIndexes();
+		ArrayList<Integer> selectedCards = new ArrayList<Integer>();
+		for (int i : theseCards) {
+			ArrayList<Card> nowThese = new ArrayList<Card>();
+			nowThese.add(cardsAt(i));
+		}
+		for (Card i : nowThese) {
+			for (Card j : nowThese) {
+				if (!i.matches(j)) {
+					selectedCards.add(i);
+					selectedCards.add(j);
+					if (containsPairSum11(selectedCards)) {
+						return true;
+					}
+					selectedCards.remove(i);
+					selectedCards.remove(j);
+				}
+			}
+		}
+		for (Card i : nowThese) {
+			if (i.rank() == "jack") {
+				for (Card j : nowThese) {
+					if (j.rank() == "queen") {
+						for (Card k : nowThese) {
+							if (k.rank() == "king") {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -78,7 +109,18 @@ public class ElevensBoard extends Board {
 	 *              contain an 11-pair; false otherwise.
 	 */
 	private boolean containsPairSum11(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+		int sum = 0;
+		if (selectedCards.size() != 2) {
+			return false;
+		}
+		for (int i : selectedCards) {
+			sum += pointValue(cardAt(i));
+		}
+		if (sum == 11) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -90,6 +132,14 @@ public class ElevensBoard extends Board {
 	 *              include a jack, a queen, and a king; false otherwise.
 	 */
 	private boolean containsJQK(List<Integer> selectedCards) {
-		/* *** TO BE IMPLEMENTED IN ACTIVITY 9 *** */
+		int sum = 0;
+		for (int i : selectedCards) {
+			sum += pointValue(cardAt(i));
+		}
+		if (sum == 11) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

@@ -52,7 +52,7 @@ public class ElevensBoard extends Board {
 	 *         false otherwise.
 	 */
 	public boolean isLegal(List<Integer> selectedCards) {
-		return (containsPairSum11() || containsJQK());
+		return (containsPairSum11(selectedCards) || containsJQK(selectedCards));
 	}
 
 	/**
@@ -65,15 +65,17 @@ public class ElevensBoard extends Board {
 	 */
 	@Override
 	public boolean anotherPlayIsPossible() {
-		ArrayList<Integer> theseCards  = cardIndexes();
+		ArrayList<Integer> theseCards  = (ArrayList<Integer>)cardIndexes();
 		ArrayList<Integer> selectedCards = new ArrayList<Integer>();
+		ArrayList<Card> nowThese = new ArrayList<Card>();
 		for (int i : theseCards) {
-			ArrayList<Card> nowThese = new ArrayList<Card>();
-			nowThese.add(cardsAt(i));
+			nowThese.add(cardAt(i));
 		}
-		for (Card i : nowThese) {
-			for (Card j : nowThese) {
-				if (!i.matches(j)) {
+		for (int i = 0; i < nowThese.size(); i++) {
+			for (int j = 0; i < nowThese.size(); i++) {
+				Card itemp = cardAt(i);
+				Card jtemp = cardAt(j);
+				if (!itemp.matches(jtemp)) {
 					selectedCards.add(i);
 					selectedCards.add(j);
 					if (containsPairSum11(selectedCards)) {
@@ -114,7 +116,7 @@ public class ElevensBoard extends Board {
 			return false;
 		}
 		for (int i : selectedCards) {
-			sum += pointValue(cardAt(i));
+ 			sum += (cardAt(i).pointValue());
 		}
 		if (sum == 11) {
 			return true;
@@ -134,7 +136,7 @@ public class ElevensBoard extends Board {
 	private boolean containsJQK(List<Integer> selectedCards) {
 		int sum = 0;
 		for (int i : selectedCards) {
-			sum += pointValue(cardAt(i));
+			sum += (cardAt(i).pointValue());
 		}
 		if (sum == 11) {
 			return true;
